@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prep Trigonometría · 2° Medio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#EEF1F6;
+    --grid-line: rgba(22,35,61,0.07);
+    --ink:#16233D;
+    --ink-soft:#51607F;
+    --paper:#FFFFFF;
+    --paper-soft:#F7F9FC;
+    --accent:#0E7C7B;
+    --accent-dark:#0A5F5E;
+    --accent-soft:#DEF0EF;
+    --amber:#C98A22;
+    --amber-soft:#FBEED8;
+    --coral:#C0524B;
+    --coral-soft:#F8E4E2;
+    --radius:14px;
+    --radius-sm:8px;
+    --font-display:'Space Grotesk', sans-serif;
+    --font-body:'Inter', sans-serif;
+    --font-mono:'JetBrains Mono', monospace;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:var(--font-body);
+    color:var(--ink);
+    background-color:var(--bg);
+    background-image:
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size:28px 28px;
+    min-height:100vh;
+    line-height:1.5;
+  }
+  .wrap{max-width:920px;margin:0 auto;padding:32px 20px 80px;}
+
+  header.top{margin-bottom:28px;}
+  header.top h1{
+    font-family:var(--font-display);
+    font-size:clamp(28px,4vw,38px);
+    margin:0 0 6px;
+    letter-spacing:-0.01em;
+  }
+  header.top p{
+    margin:0;
+    color:var(--ink-soft);
+    font-size:15.5px;
+    max-width:60ch;
+  }
+
+  nav.tabs{
+    display:flex;
+    gap:6px;
+    margin:26px 0 24px;
+    border-bottom:2px solid rgba(22,35,61,0.12);
+  }
+  nav.tabs button{
+    font-family:var(--font-display);
+    font-size:15px;
+    font-weight:600;
+    color:var(--ink-soft);
+    background:none;
+    border:none;
+    padding:10px 6px;
+    margin-right:14px;
+    cursor:pointer;
+    border-bottom:3px solid transparent;
+    transform:translateY(2px);
+  }
+  nav.tabs button.active{color:var(--ink);border-bottom-color:var(--accent);}
+  nav.tabs button:hover{color:var(--ink);}
+
+  section.panel{display:none;}
+  section.panel.active{display:block;animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+
+  .card{
+    background:var(--paper);
+    border-radius:var(--radius);
+    padding:22px 24px;
+    box-shadow:0 1px 0 rgba(22,35,61,0.06), 0 8px 20px -14px rgba(22,35,61,0.25);
+    margin-bottom:20px;
+  }
+  .card h2{font-family:var(--font-display);font-size:19px;margin:0 0 12px;}
+  .card h3{font-family:var(--font-display);font-size:16px;margin:18px 0 8px;}
+  .card p{margin:0 0 10px;color:var(--ink-soft);}
+
+  /* ---- HERO TRIANGLE ---- */
+  .hero{
+    display:grid;
+    grid-template-columns:1.1fr 1fr;
+    gap:24px;
+    align-items:center;
+  }
+  @media (max-width:680px){ .hero{grid-template-columns:1fr;} }
+  .hero svg{width:100%;height:auto;display:block;}
+  .side-label{font-family:var(--font-mono);font-size:12px;fill:var(--ink-soft);}
+  .angle-label{font-family:var(--font-mono);font-size:13px;fill:var(--amber);font-weight:700;}
+
+  .readout{
+    display:grid;
+    gap:10px;
+  }
+  .slider-row{display:flex;align-items:center;gap:12px;}
+  .slider-row input[type=range]{flex:1;accent-color:var(--accent);}
+  .slider-row .theta-val{
+    font-family:var(--font-mono);
+    font-weight:700;
+    min-width:52px;
+    text-align:right;
+  }
+  .ratio-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
+    margin-top:6px;
+  }
+  .ratio-cell{
+    background:var(--paper-soft);
+    border-radius:var(--radius-sm);
+    padding:10px 8px;
+    text-align:center;
+  }
+  .ratio-cell .name{font-size:12px;color:var(--ink-soft);}
+  .ratio-cell .val{font-family:var(--font-mono);font-weight:700;font-size:16px;color:var(--accent-dark);}
+  .mini-note{font-size:13px;color:var(--ink-soft);margin-top:8px;}
+
+  /* ---- THEORY TABLE ---- */
+  table.angles{
+    width:100%;
+    border-collapse:collapse;
+    font-family:var(--font-mono);
+    font-size:14px;
+  }
+  table.angles th, table.angles td{
+    padding:9px 8px;
+    text-align:center;
+    border-bottom:1px solid rgba(22,35,61,0.08);
+  }
+  table.angles th{font-family:var(--font-body);font-weight:600;color:var(--ink-soft);font-size:13px;}
+  table.angles td.exact{color:var(--ink-soft);font-size:13px;}
+
+  .soh-cah{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+    margin-top:10px;
+  }
+  .soh-cah div{
+    background:var(--accent-soft);
+    border-radius:var(--radius-sm);
+    padding:14px;
+  }
+  .soh-cah .letters{font-family:var(--font-display);font-size:20px;color:var(--accent-dark);}
+  .soh-cah .desc{font-size:13px;color:var(--ink-soft);margin-top:4px;}
+
+  /* ---- PRACTICE ---- */
+  .practice-head{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px;}
+  .score-pill{
+    font-family:var(--font-mono);
+    background:var(--paper-soft);
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:13px;
+  }
+  .statement{font-size:16px;margin:14px 0 16px;}
+  .answer-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+  .answer-row input[type=text]{
+    font-family:var(--font-mono);
+    font-size:16px;
+    padding:9px 12px;
+    border:2px solid rgba(22,35,61,0.15);
+    border-radius:var(--radius-sm);
+    width:140px;
+  }
+  .answer-row input[type=text]:focus{outline:none;border-color:var(--accent);}
+  .answer-row .unit{color:var(--ink-soft);font-size:14px;}
+
+  button.btn{
+    font-family:var(--font-display);
+    font-weight:600;
+    font-size:14px;
+    background:var(--accent);
+    color:#fff;
+    border:none;
+    padding:10px 18px;
+    border-radius:var(--radius-sm);
+    cursor:pointer;
+  }
+  button.btn:hover{background:var(--accent-dark);}
+  button.btn.ghost{
+    background:none;
+    color:var(--ink);
+    border:2px solid rgba(22,35,61,0.15);
+  }
+  button.btn.ghost:hover{border-color:var(--ink);}
+  button.btn:disabled{opacity:.5;cursor:default;}
+
+  .feedback{
+    margin-top:14px;
+    padding:12px 14px;
+    border-radius:var(--radius-sm);
+    font-size:14.5px;
+    display:none;
+  }
+  .feedback.ok{background:var(--accent-soft);color:var(--accent-dark);display:block;}
+  .feedback.bad{background:var(--coral-soft);color:var(--coral);display:block;}
+  .solution{
+    margin-top:10px;
+    padding:12px 14px;
+    background:var(--paper-soft);
+    border-radius:var(--radius-sm);
+    font-size:14px;
+    color:var(--ink-soft);
+    display:none;
+  }
+  .solution.show{display:block;}
+  .action-row{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;}
+
+  /* ---- QUIZ ---- */
+  .quiz-head{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px;margin-bottom:6px;}
+  .quiz-progress{font-family:var(--font-mono);font-size:13px;color:var(--ink-soft);}
+  .quiz-timer{font-family:var(--font-mono);font-size:13px;color:var(--ink-soft);}
+  .quiz-q{font-size:16.5px;margin:16px 0 14px;font-weight:600;}
+  .options{display:grid;gap:10px;}
+  .opt{
+    text-align:left;
+    padding:12px 14px;
+    border-radius:var(--radius-sm);
+    border:2px solid rgba(22,35,61,0.12);
+    background:var(--paper);
+    cursor:pointer;
+    font-family:var(--font-body);
+    font-size:14.5px;
+  }
+  .opt:hover{border-color:var(--accent);}
+  .opt.selected{border-color:var(--accent);background:var(--accent-soft);}
+  .opt.correct{border-color:var(--accent);background:var(--accent-soft);}
+  .opt.incorrect{border-color:var(--coral);background:var(--coral-soft);}
+  .opt:disabled{cursor:default;}
+  .explain{
+    margin-top:12px;
+    padding:12px 14px;
+    background:var(--amber-soft);
+    border-radius:var(--radius-sm);
+    font-size:14px;
+    color:#7A5A16;
+    display:none;
+  }
+  .explain.show{display:block;}
+
+  .results-score{
+    font-family:var(--font-display);
+    font-size:42px;
+    margin:6px 0 2px;
+  }
+  .results-tier{color:var(--ink-soft);margin-bottom:14px;}
+  .missed-item{
+    padding:10px 0;
+    border-top:1px solid rgba(22,35,61,0.08);
+    font-size:14px;
+  }
+  .missed-item .q{font-weight:600;margin-bottom:4px;}
+  .missed-item .a{color:var(--ink-soft);}
+
+  footer{
+    margin-top:30px;
+    text-align:center;
+    color:var(--ink-soft);
+    font-size:13px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <h1>Prep de trigonometría</h1>
+    <p>Repasa las razones trigonométricas, practica con ejercicios generados al azar y ponte a prueba con un quiz cronometrado antes de la prueba.</p>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab-btn active" data-tab="teoria">Teoría</button>
+    <button class="tab-btn" data-tab="practica">Práctica</button>
+    <button class="tab-btn" data-tab="quiz">Quiz</button>
+  </nav>
+
+  <!-- TEORÍA -->
+  <section class="panel active" id="teoria">
+    <div class="card hero">
+      <svg id="triSvg" viewBox="0 0 400 260"></svg>
+      <div class="readout">
+        <div class="slider-row">
+          <label for="thetaSlider" style="font-size:13px;color:var(--ink-soft);">Ángulo θ</label>
+          <input type="range" id="thetaSlider" min="10" max="80" value="40">
+          <span class="theta-val" id="thetaVal">40°</span>
+        </div>
+        <div class="ratio-grid">
+          <div class="ratio-cell"><div class="name">sen θ</div><div class="val" id="senVal">-</div></div>
+          <div class="ratio-cell"><div class="name">cos θ</div><div class="val" id="cosVal">-</div></div>
+          <div class="ratio-cell"><div class="name">tan θ</div><div class="val" id="tanVal">-</div></div>
+        </div>
+        <p class="mini-note">Hipotenusa fija en 10 unidades. Mueve el ángulo y observa cómo cambian los catetos y las razones.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Las tres razones básicas</h2>
+      <p>En todo triángulo rectángulo, cada razón trigonométrica de un ángulo agudo relaciona dos de sus lados.</p>
+      <div class="soh-cah">
+        <div><div class="letters">sen θ</div><div class="desc">cateto opuesto / hipotenusa</div></div>
+        <div><div class="letters">cos θ</div><div class="desc">cateto adyacente / hipotenusa</div></div>
+        <div><div class="letters">tan θ</div><div class="desc">cateto opuesto / cateto adyacente</div></div>
+      </div>
+      <p style="margin-top:14px;">Regla mnemotécnica: <strong>SOH – CAH – TOA</strong>. También es útil recordar la identidad pitagórica: sen²θ + cos²θ = 1.</p>
+    </div>
+
+    <div class="card">
+      <h2>Ángulos notables</h2>
+      <table class="angles">
+        <thead>
+          <tr><th>θ</th><th>sen θ</th><th>cos θ</th><th>tan θ</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>0°</td><td class="exact">0</td><td class="exact">1</td><td class="exact">0</td></tr>
+          <tr><td>30°</td><td class="exact">1/2 = 0,5</td><td class="exact">√3/2 ≈ 0,866</td><td class="exact">√3/3 ≈ 0,577</td></tr>
+          <tr><td>45°</td><td class="exact">√2/2 ≈ 0,707</td><td class="exact">√2/2 ≈ 0,707</td><td class="exact">1</td></tr>
+          <tr><td>60°</td><td class="exact">√3/2 ≈ 0,866</td><td class="exact">1/2 = 0,5</td><td class="exact">√3 ≈ 1,732</td></tr>
+          <tr><td>90°</td><td class="exact">1</td><td class="exact">0</td><td class="exact">no está definida</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>Ángulos de elevación y depresión</h2>
+      <p>El <strong>ángulo de elevación</strong> se mide desde la horizontal hacia arriba, cuando miras algo más alto que tú. El <strong>ángulo de depresión</strong> se mide desde la horizontal hacia abajo, cuando miras algo más bajo. En ambos casos se resuelven armando un triángulo rectángulo imaginario y aplicando SOH-CAH-TOA.</p>
+    </div>
+  </section>
+
+  <!-- PRÁCTICA -->
+  <section class="panel" id="practica">
+    <div class="card">
+      <div class="practice-head">
+        <h2 style="margin:0;">Ejercicios</h2>
+        <span class="score-pill" id="practiceScore">0 / 0 correctas</span>
+      </div>
+      <p class="statement" id="exStatement">Presiona "Nuevo ejercicio" para comenzar.</p>
+      <div class="answer-row">
+        <input type="text" id="exInput" placeholder="Tu respuesta" inputmode="decimal">
+        <span class="unit" id="exUnit"></span>
+        <button class="btn" id="checkBtn">Verificar respuesta</button>
+      </div>
+      <div class="feedback" id="exFeedback"></div>
+      <div class="solution" id="exSolution"></div>
+      <div class="action-row">
+        <button class="btn ghost" id="newExBtn">Nuevo ejercicio</button>
+        <button class="btn ghost" id="showSolBtn">Ver solución</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUIZ -->
+  <section class="panel" id="quiz">
+    <div class="card" id="quizIntro">
+      <h2>Quiz de autoevaluación</h2>
+      <p>8 preguntas al azar sobre teoría y cálculo. Al final verás tu puntaje y las respuestas que conviene repasar.</p>
+      <button class="btn" id="startQuizBtn">Comenzar quiz</button>
+    </div>
+
+    <div class="card" id="quizPlay" style="display:none;">
+      <div class="quiz-head">
+        <span class="quiz-progress" id="quizProgress">Pregunta 1 / 8</span>
+        <span class="quiz-timer" id="quizTimer">0:00</span>
+      </div>
+      <p class="quiz-q" id="quizQuestion"></p>
+      <div class="options" id="quizOptions"></div>
+      <div class="explain" id="quizExplain"></div>
+      <div class="action-row">
+        <button class="btn" id="confirmBtn">Confirmar</button>
+        <button class="btn ghost" id="nextBtn" style="display:none;">Siguiente</button>
+      </div>
+    </div>
+
+    <div class="card" id="quizResults" style="display:none;">
+      <h2>Resultado</h2>
+      <div class="results-score" id="resultsScore">0 / 8</div>
+      <div class="results-tier" id="resultsTier"></div>
+      <div id="missedList"></div>
+      <div class="action-row">
+        <button class="btn" id="retryQuizBtn">Reintentar con nuevas preguntas</button>
+      </div>
+    </div>
+  </section>
+
+  <footer>Repaso de trigonometría · triángulo rectángulo · 2° medio</footer>
+</div>
+
+<script>
+/* ---------- TABS ---------- */
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.tab).classList.add('active');
+  });
+});
+
+/* ---------- HERO TRIANGLE ---------- */
+const svg = document.getElementById('triSvg');
+const slider = document.getElementById('thetaSlider');
+const thetaVal = document.getElementById('thetaVal');
+const senVal = document.getElementById('senVal');
+const cosVal = document.getElementById('cosVal');
+const tanVal = document.getElementById('tanVal');
+const SCALE = 18; // px per unit, hipotenusa = 10 unidades -> 180px
+
+function drawTriangle(thetaDeg){
+  const rad = thetaDeg * Math.PI / 180;
+  const hyp = 10;
+  const opp = hyp * Math.sin(rad);
+  const adj = hyp * Math.cos(rad);
+
+  const C = {x:70, y:210}; // right angle vertex
+  const A = {x:70 + adj*SCALE, y:210}; // theta vertex
+  const D = {x:70, y:210 - opp*SCALE}; // top vertex
+
+  // right angle marker
+  const m = 12;
+  const rightMarker = `M ${C.x} ${C.y-m} L ${C.x+m} ${C.y-m} L ${C.x+m} ${C.y}`;
+
+  // angle arc (quadratic curve toward vertex A)
+  const r = 30;
+  const p1 = {x:A.x-r, y:A.y};
+  const dx = D.x-A.x, dy=D.y-A.y, len=Math.sqrt(dx*dx+dy*dy);
+  const p2 = {x:A.x+(dx/len)*r, y:A.y+(dy/len)*r};
+
+  const senT = Math.sin(rad).toFixed(3);
+  const cosT = Math.cos(rad).toFixed(3);
+  const tanT = Math.tan(rad).toFixed(3);
+
+  svg.innerHTML = `
+    <path d="M ${A.x} ${A.y} L ${D.x} ${D.y} L ${C.x} ${C.y} Z" fill="var(--accent-soft)" stroke="var(--ink)" stroke-width="2" />
+    <path d="${rightMarker}" fill="none" stroke="var(--ink)" stroke-width="1.6" />
+    <path d="M ${p1.x} ${p1.y} Q ${A.x} ${A.y} ${p2.x} ${p2.y}" fill="none" stroke="var(--amber)" stroke-width="2" />
+    <text class="angle-label" x="${A.x-46}" y="${A.y-10}">${thetaDeg}°</text>
+    <text class="side-label" x="${(C.x+A.x)/2-30}" y="${C.y+20}">adyacente = ${adj.toFixed(2)}</text>
+    <text class="side-label" x="${C.x-58}" y="${(C.y+D.y)/2}">opuesto = ${opp.toFixed(2)}</text>
+    <text class="side-label" x="${(A.x+D.x)/2+6}" y="${(A.y+D.y)/2-6}">hipotenusa = 10</text>
+  `;
+
+  thetaVal.textContent = thetaDeg+'°';
+  senVal.textContent = senT;
+  cosVal.textContent = cosT;
+  tanVal.textContent = tanT;
+}
+slider.addEventListener('input', ()=>drawTriangle(parseInt(slider.value,10)));
+drawTriangle(parseInt(slider.value,10));
+
+/* ---------- PRACTICE EXERCISES ---------- */
+const anglePool = [20,25,30,35,37,40,45,50,53,55,60,65,70];
+function rnd(min,max){return Math.floor(Math.random()*(max-min+1))+min;}
+function round1(n){return Math.round(n*10)/10;}
+function toRad(d){return d*Math.PI/180;}
+function toDeg(r){return r*180/Math.PI;}
+
+let currentExercise = null;
+let practiceStats = {correct:0, total:0};
+
+function generateExercise(){
+  const theta = anglePool[rnd(0,anglePool.length-1)];
+  const H = rnd(8,25);
+  const rad = toRad(theta);
+  const O = round1(H*Math.sin(rad));
+  const Adj = round1(H*Math.cos(rad));
+  const kind = rnd(0,7);
+  let statement, answer, tolerance, unit, solution;
+
+  switch(kind){
+    case 0:
+      statement = `En un triángulo rectángulo, la hipotenusa mide ${H} cm y uno de sus ángulos agudos mide ${theta}°. Calcula la medida del cateto opuesto a ese ángulo.`;
+      answer = O; tolerance = 0.3; unit = 'cm';
+      solution = `sen(θ) = opuesto / hipotenusa → opuesto = hipotenusa × sen(θ) = ${H} × sen(${theta}°) ≈ ${O} cm.`;
+      break;
+    case 1:
+      statement = `En un triángulo rectángulo, la hipotenusa mide ${H} cm y uno de sus ángulos agudos mide ${theta}°. Calcula la medida del cateto adyacente a ese ángulo.`;
+      answer = Adj; tolerance = 0.3; unit = 'cm';
+      solution = `cos(θ) = adyacente / hipotenusa → adyacente = hipotenusa × cos(θ) = ${H} × cos(${theta}°) ≈ ${Adj} cm.`;
+      break;
+    case 2: {
+      const ans = round1(O/Math.sin(rad));
+      statement = `El cateto opuesto a un ángulo de ${theta}° mide ${O} cm. Calcula la medida de la hipotenusa.`;
+      answer = ans; tolerance = 0.3; unit = 'cm';
+      solution = `sen(θ) = opuesto / hipotenusa → hipotenusa = opuesto / sen(θ) = ${O} / sen(${theta}°) ≈ ${ans} cm.`;
+      break;
+    }
+    case 3: {
+      const ans = round1(Adj/Math.cos(rad));
+      statement = `El cateto adyacente a un ángulo de ${theta}° mide ${Adj} cm. Calcula la medida de la hipotenusa.`;
+      answer = ans; tolerance = 0.3; unit = 'cm';
+      solution = `cos(θ) = adyacente / hipotenusa → hipotenusa = adyacente / cos(θ) = ${Adj} / cos(${theta}°) ≈ ${ans} cm.`;
+      break;
+    }
+    case 4: {
+      const ans = Math.round(toDeg(Math.asin(O/H)));
+      statement = `En un triángulo rectángulo, el cateto opuesto a un ángulo agudo mide ${O} cm y la hipotenusa mide ${H} cm. Calcula la medida de ese ángulo (aproxima al grado).`;
+      answer = ans; tolerance = 1.5; unit = '°';
+      solution = `sen(θ) = opuesto / hipotenusa = ${O} / ${H} → θ = sen⁻¹(${(O/H).toFixed(3)}) ≈ ${ans}°.`;
+      break;
+    }
+    case 5: {
+      const ans = Math.round(toDeg(Math.acos(Adj/H)));
+      statement = `En un triángulo rectángulo, el cateto adyacente a un ángulo agudo mide ${Adj} cm y la hipotenusa mide ${H} cm. Calcula la medida de ese ángulo (aproxima al grado).`;
+      answer = ans; tolerance = 1.5; unit = '°';
+      solution = `cos(θ) = adyacente / hipotenusa = ${Adj} / ${H} → θ = cos⁻¹(${(Adj/H).toFixed(3)}) ≈ ${ans}°.`;
+      break;
+    }
+    case 6: {
+      const ans = Math.round(toDeg(Math.atan(O/Adj)));
+      statement = `En un triángulo rectángulo, el cateto opuesto mide ${O} cm y el cateto adyacente mide ${Adj} cm. Calcula la medida del ángulo agudo entre la hipotenusa y el cateto adyacente (aproxima al grado).`;
+      answer = ans; tolerance = 1.5; unit = '°';
+      solution = `tan(θ) = opuesto / adyacente = ${O} / ${Adj} → θ = tan⁻¹(${(O/Adj).toFixed(3)}) ≈ ${ans}°.`;
+      break;
+    }
+    case 7: {
+      const D = rnd(6,20);
+      const h = round1(D*Math.tan(rad));
+      statement = `Una persona se encuentra a ${D} m de la base de un árbol y observa la copa con un ángulo de elevación de ${theta}°. Calcula la altura del árbol.`;
+      answer = h; tolerance = 0.4; unit = 'm';
+      solution = `tan(θ) = altura / distancia → altura = distancia × tan(θ) = ${D} × tan(${theta}°) ≈ ${h} m.`;
+      break;
+    }
+  }
+  return {statement, answer, tolerance, unit, solution};
+}
+
+const exStatement = document.getElementById('exStatement');
+const exInput = document.getElementById('exInput');
+const exUnit = document.getElementById('exUnit');
+const exFeedback = document.getElementById('exFeedback');
+const exSolution = document.getElementById('exSolution');
+const practiceScoreEl = document.getElementById('practiceScore');
+
+function newExercise(){
+  currentExercise = generateExercise();
+  exStatement.textContent = currentExercise.statement;
+  exUnit.textContent = currentExercise.unit;
+  exInput.value = '';
+  exFeedback.className = 'feedback';
+  exFeedback.textContent = '';
+  exSolution.className = 'solution';
+  exSolution.textContent = currentExercise.solution;
+}
+
+document.getElementById('newExBtn').addEventListener('click', newExercise);
+document.getElementById('showSolBtn').addEventListener('click', ()=>{
+  if(!currentExercise) return;
+  exSolution.classList.add('show');
+});
+document.getElementById('checkBtn').addEventListener('click', ()=>{
+  if(!currentExercise) return;
+  const val = parseFloat(exInput.value.replace(',','.'));
+  if(isNaN(val)){
+    exFeedback.className = 'feedback bad';
+    exFeedback.textContent = 'Escribe un número antes de verificar.';
+    return;
+  }
+  practiceStats.total++;
+  const ok = Math.abs(val - currentExercise.answer) <= currentExercise.tolerance;
+  if(ok) practiceStats.correct++;
+  exFeedback.className = 'feedback ' + (ok ? 'ok' : 'bad');
+  exFeedback.textContent = ok
+    ? `Correcto. La respuesta esperada era ${currentExercise.answer}${currentExercise.unit}.`
+    : `No es correcto. La respuesta esperada era ${currentExercise.answer}${currentExercise.unit}. Revisa la solución abajo.`;
+  exSolution.classList.add('show');
+  practiceScoreEl.textContent = `${practiceStats.correct} / ${practiceStats.total} correctas`;
+});
+newExercise();
+
+/* ---------- QUIZ ---------- */
+const questionBank = [
+  {q:'¿Qué razón trigonométrica corresponde a "cateto opuesto sobre hipotenusa"?', opts:['seno','coseno','tangente','no existe'], correct:0, explain:'Por definición, sen(θ) = cateto opuesto / hipotenusa (regla SOH).'},
+  {q:'¿Qué razón trigonométrica corresponde a "cateto adyacente sobre hipotenusa"?', opts:['tangente','coseno','seno','ninguna'], correct:1, explain:'cos(θ) = cateto adyacente / hipotenusa (regla CAH).'},
+  {q:'¿Qué razón trigonométrica corresponde a "cateto opuesto sobre cateto adyacente"?', opts:['seno','coseno','tangente','secante'], correct:2, explain:'tan(θ) = cateto opuesto / cateto adyacente (regla TOA).'},
+  {q:'¿Cuánto vale sen(30°)?', opts:['0,5','0,707','0,866','1'], correct:0, explain:'sen(30°) = 1/2 = 0,5, uno de los ángulos notables.'},
+  {q:'¿Cuánto vale cos(60°)?', opts:['0,866','1','0,5','0'], correct:2, explain:'cos(60°) = 1/2 = 0,5.'},
+  {q:'¿Cuánto vale tan(45°)?', opts:['0','0,707','1','no está definida'], correct:2, explain:'En 45°, cateto opuesto y adyacente son iguales, por lo que tan(45°) = 1.'},
+  {q:'¿Por qué tan(90°) no está definida?', opts:['Porque el cateto adyacente vale 0 y no se puede dividir por 0','Porque el ángulo es demasiado grande','Porque el seno vale 0','Porque no existen triángulos con ese ángulo'], correct:0, explain:'tan(θ) = opuesto/adyacente; en 90° el cateto adyacente mide 0, y dividir por 0 no está definido.'},
+  {q:'Según la identidad pitagórica, si sen(θ) = 0,6, ¿cuánto vale cos(θ) (positivo)?', opts:['0,4','0,6','0,8','1,2'], correct:2, explain:'sen²θ + cos²θ = 1 → cos²θ = 1 − 0,36 = 0,64 → cos θ = 0,8.'},
+  {q:'Un triángulo rectángulo tiene hipotenusa 10 y un ángulo de 30°. ¿Cuánto mide el cateto opuesto a ese ángulo?', opts:['5','8,66','7,07','10'], correct:0, explain:'opuesto = hipotenusa × sen(30°) = 10 × 0,5 = 5.'},
+  {q:'Un triángulo rectángulo tiene catetos 3 y 4. ¿Cuánto mide la hipotenusa?', opts:['5','6','7','12'], correct:0, explain:'Por Pitágoras, hipotenusa = √(3²+4²) = √25 = 5.'},
+  {q:'¿Qué es el ángulo de elevación?', opts:['El que se mide desde la horizontal hacia abajo','El ángulo recto del triángulo','El que se mide desde la horizontal hacia arriba, al mirar algo más alto','El ángulo opuesto a la hipotenusa'], correct:2, explain:'El ángulo de elevación se forma entre la horizontal y la línea de visión hacia un punto más alto.'},
+  {q:'Si conoces un ángulo agudo y el cateto adyacente, ¿qué razón usarías para hallar la hipotenusa?', opts:['seno','coseno','tangente','ninguna de las anteriores'], correct:1, explain:'cos(θ) = adyacente/hipotenusa → hipotenusa = adyacente / cos(θ).'},
+  {q:'Si conoces el cateto opuesto y el cateto adyacente, ¿qué razón usarías para hallar el ángulo?', opts:['seno','coseno','tangente','no se puede calcular'], correct:2, explain:'tan(θ) = opuesto/adyacente, por lo que θ = tan⁻¹(opuesto/adyacente).'},
+  {q:'En un triángulo rectángulo, ¿qué ocurre con la suma de los dos ángulos agudos?', opts:['Suman 90°','Suman 180°','Suman 360°','Depende del triángulo'], correct:0, explain:'Como un ángulo es de 90°, los otros dos ángulos agudos son complementarios y suman 90°.'},
+  {q:'Una escalera de 5 m forma un ángulo de 60° con el suelo. ¿Qué razón usarías para calcular la altura que alcanza en la pared?', opts:['seno, con la hipotenusa conocida','coseno, con el cateto adyacente conocido','tangente, con ambos catetos conocidos','no se puede resolver'], correct:0, explain:'La altura es el cateto opuesto al ángulo y la escalera es la hipotenusa, así que se usa sen(θ) = opuesto/hipotenusa.'}
+];
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+let quizQuestions = [];
+let quizIndex = 0;
+let quizScore = 0;
+let quizMissed = [];
+let quizAnswered = false;
+let quizTimerInterval = null;
+let quizSeconds = 0;
+
+const quizIntro = document.getElementById('quizIntro');
+const quizPlay = document.getElementById('quizPlay');
+const quizResults = document.getElementById('quizResults');
+const quizProgress = document.getElementById('quizProgress');
+const quizTimer = document.getElementById('quizTimer');
+const quizQuestionEl = document.getElementById('quizQuestion');
+const quizOptionsEl = document.getElementById('quizOptions');
+const quizExplainEl = document.getElementById('quizExplain');
+const confirmBtn = document.getElementById('confirmBtn');
+const nextBtn = document.getElementById('nextBtn');
+
+function startQuiz(){
+  quizQuestions = shuffle(questionBank).slice(0,8);
+  quizIndex = 0; quizScore = 0; quizMissed = []; quizSeconds = 0;
+  quizIntro.style.display = 'none';
+  quizResults.style.display = 'none';
+  quizPlay.style.display = 'block';
+  clearInterval(quizTimerInterval);
+  quizTimerInterval = setInterval(()=>{
+    quizSeconds++;
+    const m = Math.floor(quizSeconds/60), s = quizSeconds%60;
+    quizTimer.textContent = `${m}:${s.toString().padStart(2,'0')}`;
+  },1000);
+  renderQuestion();
+}
+
+function renderQuestion(){
+  quizAnswered = false;
+  const item = quizQuestions[quizIndex];
+  quizProgress.textContent = `Pregunta ${quizIndex+1} / ${quizQuestions.length}`;
+  quizQuestionEl.textContent = item.q;
+  quizExplainEl.classList.remove('show');
+  quizExplainEl.textContent = '';
+  nextBtn.style.display = 'none';
+  confirmBtn.style.display = 'inline-block';
+  confirmBtn.disabled = false;
+
+  const order = shuffle(item.opts.map((text,i)=>({text,isCorrect:i===item.correct})));
+  quizOptionsEl.innerHTML = '';
+  order.forEach(opt=>{
+    const b = document.createElement('button');
+    b.className = 'opt';
+    b.textContent = opt.text;
+    b.dataset.correct = opt.isCorrect;
+    b.addEventListener('click', ()=>{
+      if(quizAnswered) return;
+      document.querySelectorAll('.opt').forEach(o=>o.classList.remove('selected'));
+      b.classList.add('selected');
+    });
+    quizOptionsEl.appendChild(b);
+  });
+}
+
+confirmBtn.addEventListener('click', ()=>{
+  if(quizAnswered) return;
+  const selected = quizOptionsEl.querySelector('.opt.selected');
+  if(!selected){
+    quizExplainEl.className = 'explain show';
+    quizExplainEl.textContent = 'Selecciona una opción antes de confirmar.';
+    return;
+  }
+  quizAnswered = true;
+  const item = quizQuestions[quizIndex];
+  const opts = quizOptionsEl.querySelectorAll('.opt');
+  opts.forEach(o=>{
+    o.disabled = true;
+    if(o.dataset.correct === 'true') o.classList.add('correct');
+  });
+  const isCorrect = selected.dataset.correct === 'true';
+  if(isCorrect){
+    quizScore++;
+  } else {
+    selected.classList.add('incorrect');
+    quizMissed.push({q:item.q, explain:item.explain});
+  }
+  quizExplainEl.className = 'explain show';
+  quizExplainEl.textContent = item.explain;
+  confirmBtn.style.display = 'none';
+  nextBtn.style.display = 'inline-block';
+  nextBtn.textContent = (quizIndex === quizQuestions.length-1) ? 'Ver resultados' : 'Siguiente';
+});
+
+nextBtn.addEventListener('click', ()=>{
+  quizIndex++;
+  if(quizIndex >= quizQuestions.length){
+    finishQuiz();
+  } else {
+    renderQuestion();
+  }
+});
+
+function finishQuiz(){
+  clearInterval(quizTimerInterval);
+  quizPlay.style.display = 'none';
+  quizResults.style.display = 'block';
+  document.getElementById('resultsScore').textContent = `${quizScore} / ${quizQuestions.length}`;
+  const pct = quizScore/quizQuestions.length;
+  let tier;
+  if(pct >= 0.9) tier = 'Excelente dominio. Estás listo o lista para la prueba.';
+  else if(pct >= 0.7) tier = 'Buen manejo. Repasa los temas de las preguntas falladas.';
+  else tier = 'Conviene reforzar antes de la prueba. Revisa la pestaña Teoría y practica más ejercicios.';
+  document.getElementById('resultsTier').textContent = tier;
+
+  const missedList = document.getElementById('missedList');
+  if(quizMissed.length === 0){
+    missedList.innerHTML = '<p style="color:var(--ink-soft);">No fallaste ninguna pregunta.</p>';
+  } else {
+    missedList.innerHTML = '<h3>Para repasar</h3>' + quizMissed.map(m=>`
+      <div class="missed-item">
+        <div class="q">${m.q}</div>
+        <div class="a">${m.explain}</div>
+      </div>
+    `).join('');
+  }
+}
+
+document.getElementById('startQuizBtn').addEventListener('click', startQuiz);
+document.getElementById('retryQuizBtn').addEventListener('click', startQuiz);
+</script>
+</body>
+</html>
